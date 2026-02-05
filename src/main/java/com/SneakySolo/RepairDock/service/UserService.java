@@ -15,6 +15,6 @@ public class UserService {
     }
 
     public User registerCustomer(RegisterRequestDTO registerRequestDTO) {
-
+        return null;
     }
 }
