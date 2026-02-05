@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -39,6 +40,7 @@ public class User {
     public User() {
     }
 
+    /* REMOVING THIS AS HAVING PROBLEM WITH DATA LOADER, ADDING ADMIN
     public User(String fullName, String email, String phoneNumber, String password, Role role, boolean enabled, LocalDateTime createdAt) {
         this.fullName = fullName;
         this.email = email;
@@ -48,6 +50,7 @@ public class User {
         this.enabled = enabled;
         this.createdAt = createdAt;
     }
+    */
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
