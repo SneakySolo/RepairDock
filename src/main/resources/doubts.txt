@@ -1,0 +1,12 @@
+q1. why embedded on address and embeddable on address (regarding repair shop) ?
+q2. how do I actually know that it's an entity or not ?
+q3. (task 12) RepairShop → User relationship + ownership clarity. what is going on ?
+
+most importantly - how do i decide the structure of a project ?
+
+
+
+// learnings -
+1) Ownership: who owns the relationship?
+ans - The table with the foreign key is the owning side
+

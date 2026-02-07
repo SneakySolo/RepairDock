@@ -1,5 +1,6 @@
 package com.SneakySolo.RepairDock.entity;
 
+import com.SneakySolo.RepairDock.domain.repairshop.RepairShop;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,9 @@ public class User {
         this.createdAt = LocalDateTime.now();
         this.enabled = true;
     }
+
+    @OneToOne(mappedBy = "owner")
+    private RepairShop repairShop;
 
     public User() {
     }

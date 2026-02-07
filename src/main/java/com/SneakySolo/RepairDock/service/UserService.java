@@ -1,11 +1,11 @@
 package com.SneakySolo.RepairDock.service;
 
-import com.SneakySolo.RepairDock.config.SecurityBeansConfig;
+import com.SneakySolo.RepairDock.dto.LoginRequestDTO;
+import com.SneakySolo.RepairDock.dto.LoginResponseDTO;
 import com.SneakySolo.RepairDock.dto.RegisterRequestDTO;
 import com.SneakySolo.RepairDock.entity.Role;
 import com.SneakySolo.RepairDock.entity.User;
 import com.SneakySolo.RepairDock.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +37,25 @@ public class UserService {
         customer.setPassword(passwordEncoder.encode(dto.password()));
 
         userRepository.save(customer);
+    }
+
+    public LoginResponseDTO loginCustomer(LoginRequestDTO dto) {
+        User user = userRepository.findByEmail(dto.email())
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+        if (!passwordEncoder.matches(dto.password(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        if (!user.isEnabled()) {
+            throw new RuntimeException("User is disabled");
+        }
+
+        return new LoginResponseDTO(
+                user.getFullName(),
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
     }
 }
