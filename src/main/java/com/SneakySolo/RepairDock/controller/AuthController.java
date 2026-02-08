@@ -1,8 +1,8 @@
 package com.SneakySolo.RepairDock.controller;
 
-import com.SneakySolo.RepairDock.dto.LoginRequestDTO;
-import com.SneakySolo.RepairDock.dto.LoginResponseDTO;
-import com.SneakySolo.RepairDock.dto.RegisterRequestDTO;
+import com.SneakySolo.RepairDock.dto.auth.LoginRequestDTO;
+import com.SneakySolo.RepairDock.dto.auth.LoginResponseDTO;
+import com.SneakySolo.RepairDock.dto.auth.RegisterRequestDTO;
 import com.SneakySolo.RepairDock.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;

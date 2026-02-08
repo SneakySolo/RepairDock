@@ -1,7 +1,7 @@
 package com.SneakySolo.RepairDock.config;
 
-import com.SneakySolo.RepairDock.entity.Role;
-import com.SneakySolo.RepairDock.entity.User;
+import com.SneakySolo.RepairDock.domain.user.Role;
+import com.SneakySolo.RepairDock.domain.user.User;
 import com.SneakySolo.RepairDock.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

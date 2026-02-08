@@ -4,6 +4,10 @@ q3. (task 12) RepairShop → User relationship + ownership clarity. what is goin
 q4. while making the request entityy and havig @manytoone relation, how did we decide that what will be join column name and stuff
 q5. some places I have put @one to many but not on other entity, but reverse in some others. WHY ?
 q6. why (fetch = FetchType.LAZY) on media relation ??
+q7. how could I have had done task 16 on my own ?
+q8. why create separate repo for media and request?
+q9. diff bw @notempty and @notblank
+q10. under the createRequest in service layer, why first user then req then media. ALso why loop for media ?
 
 
 most importantly - how do i decide the structure of a project ?

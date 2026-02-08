@@ -1,6 +1,6 @@
 package com.SneakySolo.RepairDock.domain.request;
 
-import com.SneakySolo.RepairDock.entity.User;
+import com.SneakySolo.RepairDock.domain.user.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -34,5 +34,56 @@ public class Request {
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.requestStatus = RequestStatus.OPEN;
+    }
+
+    public Request() {
+    }
+
+    public User getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(User customer) {
+        this.customer = customer;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return Title;
+    }
+
+    public void setTitle(String title) {
+        Title = title;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    public RequestStatus getRequestStatus() {
+        return requestStatus;
+    }
+
+    public void setRequestStatus(RequestStatus requestStatus) {
+        this.requestStatus = requestStatus;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

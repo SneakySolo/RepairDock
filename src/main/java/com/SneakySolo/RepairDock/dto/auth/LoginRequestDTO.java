@@ -1,4 +1,4 @@
-package com.SneakySolo.RepairDock.dto;
+package com.SneakySolo.RepairDock.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

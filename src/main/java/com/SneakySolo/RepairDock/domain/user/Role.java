@@ -1,4 +1,4 @@
-package com.SneakySolo.RepairDock.entity;
+package com.SneakySolo.RepairDock.domain.user;
 
 public enum Role {
     ADMIN,

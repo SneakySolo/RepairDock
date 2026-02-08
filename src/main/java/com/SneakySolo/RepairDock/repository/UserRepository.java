@@ -1,6 +1,6 @@
 package com.SneakySolo.RepairDock.repository;
 
-import com.SneakySolo.RepairDock.entity.User;
+import com.SneakySolo.RepairDock.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

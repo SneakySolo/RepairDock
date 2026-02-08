@@ -1,7 +1,7 @@
 package com.SneakySolo.RepairDock.domain.repairshop;
 
 import com.SneakySolo.RepairDock.domain.common.Address;
-import com.SneakySolo.RepairDock.entity.User;
+import com.SneakySolo.RepairDock.domain.user.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
