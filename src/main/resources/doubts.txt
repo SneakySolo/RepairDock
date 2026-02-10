@@ -8,6 +8,7 @@ q7. how could I have had done task 16 on my own ?
 q8. why create separate repo for media and request?
 q9. diff bw @notempty and @notblank
 q10. under the createRequest in service layer, why first user then req then media. ALso why loop for media ?
+q11. see that we put @manytoone on request and repairshop in bid entity but join column using (name = "request_id") as that name isn't even on request entity.
 
 
 most importantly - how do i decide the structure of a project ?

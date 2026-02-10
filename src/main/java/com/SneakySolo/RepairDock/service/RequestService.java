@@ -8,7 +8,6 @@ import com.SneakySolo.RepairDock.domain.user.User;
 import com.SneakySolo.RepairDock.dto.request.MediaCreateDTO;
 import com.SneakySolo.RepairDock.dto.request.RequestCreateDTO;
 import com.SneakySolo.RepairDock.repository.MediaRepository;
-import com.SneakySolo.RepairDock.repository.RepairShopRepository;
 import com.SneakySolo.RepairDock.repository.RequestRepository;
 import com.SneakySolo.RepairDock.repository.UserRepository;
 import org.springframework.stereotype.Service;
