@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class AuthController {
@@ -26,7 +27,21 @@ public class AuthController {
 
     @PostMapping("/login")
     public LoginResponseDTO login(
-            @Valid @RequestBody LoginRequestDTO requestDTO) {
-        return userService.loginCustomer(requestDTO);
+            @Valid @RequestBody LoginRequestDTO requestDTO,
+            HttpSession session
+    ) {
+        LoginResponseDTO response = userService.loginCustomer(requestDTO);
+
+        session.setAttribute("USER_ID", response.id());
+        session.setAttribute("USER_ROLE", response.role());
+        session.setAttribute("USER_NAME", response.fullname());
+
+        return response;
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "Logged out successfully";
     }
 }
