@@ -5,6 +5,7 @@ import com.SneakySolo.RepairDock.dto.auth.LoginResponseDTO;
 import com.SneakySolo.RepairDock.dto.auth.RegisterRequestDTO;
 import com.SneakySolo.RepairDock.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,4 +45,14 @@ public class AuthController {
         session.invalidate();
         return "Logged out successfully";
     }
+
+    @GetMapping("/api/secure-test")
+    public String secureEndpoint(HttpSession session) {
+        if (session.getAttribute("USER_ID") == null) {
+            throw new RuntimeException("Not authenticated");
+        }
+
+        return "You are authenticated!";
+    }
+
 }

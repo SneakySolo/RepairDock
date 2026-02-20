@@ -2,10 +2,8 @@ package com.SneakySolo.RepairDock.controller;
 
 import com.SneakySolo.RepairDock.domain.rating.Rating;
 import com.SneakySolo.RepairDock.service.RatingService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/ratings")
@@ -30,4 +28,14 @@ public class RatingController {
                 customerId
         );
     }
+
+    @GetMapping("/api/secure-test")
+    public String secureEndpoint(HttpSession session) {
+        if (session.getAttribute("USER_ID") == null) {
+            throw new RuntimeException("Not authenticated");
+        }
+
+        return "You are authenticated!";
+    }
+
 }
