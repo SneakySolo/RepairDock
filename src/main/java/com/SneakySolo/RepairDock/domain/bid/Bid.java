@@ -34,8 +34,8 @@ public class Bid {
     @JoinColumn(name = "request_id", nullable = false)
     private Request request;
 
-    @ManyToOne (optional = false)
-    @JoinColumn(name = "request_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "repair_shop_id", nullable = false)
     private RepairShop repairShop;
 
     @PrePersist

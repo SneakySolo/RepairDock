@@ -32,9 +32,5 @@ public class SessionService {
         if (currentRole == null) {
             throw new RuntimeException("You must be logged in");
         }
-
-        if (reqRole != null && reqRole != currentRole) {
-            throw new RuntimeException("insufficient permission");
-        }
     }
 }

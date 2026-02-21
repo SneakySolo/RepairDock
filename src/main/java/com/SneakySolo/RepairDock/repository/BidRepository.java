@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface BidRepository extends JpaRepository<Bid,Long> {
     List <Bid> findByRequestId(Long reqId);
-    Optional<Bid> findByRequestIdAndRepairShopId(Long reqId);
+    Optional<Bid> findByRequestIdAndRepairShopId(Long requestId, Long repairShopId);
     boolean existsByRequestIdAndRepairShopId(Long reqId, Long repId);
     Optional<Bid> findByRequestIdAndStatus(Long requestId, BidStatus status);
 }

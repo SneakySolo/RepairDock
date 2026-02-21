@@ -13,6 +13,12 @@ public record RequestCreateDTO(
         String Description,
 
         @NotEmpty
+        double latitude,
+
+        @NotEmpty
+        double longitude,
+
+        @NotEmpty
         List<MediaCreateDTO> mediaList
 ) {
 }
