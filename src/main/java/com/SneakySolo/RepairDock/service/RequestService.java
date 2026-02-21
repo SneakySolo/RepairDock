@@ -48,10 +48,10 @@ public class RequestService {
 
         Request req = new  Request();
         req.setCustomer(customer);
-        req.setTitle(dto.Title());
-        req.setDescription(dto.Description());
-        req.getLatitude(dto.latitude());
-        req.getLongitude(dto.longitude());
+        req.setTitle(dto.title());
+        req.setDescription(dto.description());
+        req.setLatitude(dto.latitude());
+        req.setLongitude(dto.longitude());
         req.setRequestStatus(RequestStatus.OPEN);
         req.setRepairShop(null);
 
@@ -68,7 +68,9 @@ public class RequestService {
         return savedRequest;
     }
 
-    public List<Request> getRequestsForCustomer(Long userId) {
+    public List<Request> getMyRequests(HttpSession session) {
+        sessionService.requiredRole(session, Role.CUSTOMER);
+        Long userId = sessionService.getCurrentUserId(session);
         return requestRepository.findByCustomerId(userId);
     }
 

@@ -3,6 +3,8 @@ package com.SneakySolo.RepairDock.controller;
 import com.SneakySolo.RepairDock.domain.rating.Rating;
 import com.SneakySolo.RepairDock.service.RatingService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,25 +19,20 @@ public class RatingController {
 
     @PostMapping
     public Rating createRating(@RequestParam Long requestId,
-                               @RequestParam Integer stars,
+                               @Valid @RequestParam Integer stars,
                                @RequestParam String comment,
-                               @RequestParam Long customerId) {
+                               HttpSession session) {
 
         return ratingService.createRating(
                 requestId,
                 stars,
                 comment,
-                customerId
+                session
         );
     }
 
-    @GetMapping("/api/secure-test")
-    public String secureEndpoint(HttpSession session) {
-        if (session.getAttribute("USER_ID") == null) {
-            throw new RuntimeException("Not authenticated");
-        }
-
-        return "You are authenticated!";
+    @GetMapping("/{shopId}/rating")
+    public ResponseEntity<Double> getAverageRating(@PathVariable Long shopId) {
+        return ResponseEntity.ok(ratingService.getAverageRating(shopId));
     }
-
 }

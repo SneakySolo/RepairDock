@@ -7,6 +7,7 @@ import com.SneakySolo.RepairDock.dto.request.RequestCreateDTO;
 import com.SneakySolo.RepairDock.service.RequestService;
 import com.SneakySolo.RepairDock.service.SessionService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class RepairController {
 
     @PostMapping
     public ResponseEntity<Request> createRequest (
-            @RequestBody RequestCreateDTO  dto,
+            @Valid @RequestBody RequestCreateDTO  dto,
             HttpSession  session ) {
 
         sessionService.requiredRole(session, Role.CUSTOMER);
@@ -42,7 +43,7 @@ public class RepairController {
         sessionService.requiredRole(session, Role.CUSTOMER);
         Long userId = sessionService.getCurrentUserId(session);
 
-        List<Request> myRequests = requestService.getRequestsForCustomer(userId);
+        List<Request> myRequests = requestService.getMyRequests(session);
 
         return ResponseEntity.ok(myRequests);
     }
