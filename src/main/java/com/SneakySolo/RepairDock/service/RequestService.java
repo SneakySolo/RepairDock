@@ -13,6 +13,10 @@ import com.SneakySolo.RepairDock.repository.RepairShopRepository;
 import com.SneakySolo.RepairDock.repository.RequestRepository;
 import com.SneakySolo.RepairDock.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,16 +72,14 @@ public class RequestService {
         return savedRequest;
     }
 
-    public List<Request> getMyRequests(HttpSession session) {
+    public Page<Request> getMyRequests(HttpSession session, Pageable pageable) {
         sessionService.requiredRole(session, Role.CUSTOMER);
         Long userId = sessionService.getCurrentUserId(session);
-        return requestRepository.findByCustomerId(userId);
+        return requestRepository.findByCustomerId(userId, pageable);
     }
 
-    public List<Request> getRequestsForMyShop(HttpSession session) {
-
+    public Page<Request> getRequestsForMyShop(HttpSession session, Pageable pageable) {
         sessionService.requiredRole(session, Role.REPAIR_PERSON);
-
         Long userId = sessionService.getCurrentUserId(session);
 
         User user = userRepository.findById(userId)
@@ -86,7 +88,7 @@ public class RequestService {
         RepairShop shop = repairShopRepository.findByOwnerId(user.getId())
                 .orElseThrow(() -> new RuntimeException("Repair shop not found"));
 
-        return requestRepository.findByRepairShopId(shop.getId());
+        return requestRepository.findByRepairShopId(shop.getId(), pageable);
     }
 
     public Request updateRequestStatus(Long requestId,
@@ -117,8 +119,52 @@ public class RequestService {
         return requestRepository.save(request);
     }
 
-    public List<Request> getOpenRequests() {
-        return requestRepository.findByRequestStatus(RequestStatus.OPEN);
+    public Page<Request> getOpenRequests(HttpSession session, int page, int size) {
+
+        sessionService.requiredRole(session, Role.REPAIR_PERSON);
+        Long userId = sessionService.getCurrentUserId(session);
+
+        RepairShop shop = repairShopRepository.findByOwnerId(userId)
+                .orElseThrow(() -> new RuntimeException("Repair shop not found"));
+
+        if (shop.getAddress() == null) {
+            throw new RuntimeException("Shop address not set");
+        }
+
+        double shopLat = shop.getAddress().getLatitude();
+        double shopLon = shop.getAddress().getLongitude();
+
+        if (shopLat == 0.0 && shopLon == 0.0) {
+            throw new RuntimeException("Shop location not configured");
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Request> openRequestsPage =
+                requestRepository.findByRequestStatus(RequestStatus.OPEN, pageable);
+
+        double radiusKm = 10.0;
+
+        List<Request> filteredRequests = openRequestsPage.getContent()
+                .stream()
+                .filter(request -> {
+
+                    double distance = calculateDistance(
+                            shopLat,
+                            shopLon,
+                            request.getLatitude(),
+                            request.getLongitude()
+                    );
+
+                    return distance <= radiusKm;
+                })
+                .toList();
+
+        return new PageImpl<>(
+                filteredRequests,
+                pageable,
+                openRequestsPage.getTotalElements()
+        );
     }
 
     public Request acceptRequest(Long requestId, HttpSession session) {
@@ -156,5 +202,24 @@ public class RequestService {
         request.setRequestStatus(RequestStatus.REJECTED);
 
         return requestRepository.save(request);
+    }
+
+    private double calculateDistance(double lat1, double lon1,
+                                     double lat2, double lon2) {
+
+        final int EARTH_RADIUS = 6371; // KM
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2)
+                * Math.sin(lonDistance / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return EARTH_RADIUS * c;
     }
 }

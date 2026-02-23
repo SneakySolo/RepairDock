@@ -27,7 +27,7 @@ public class RepairShop {
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.verified = false;
+        this.verified = true;
     }
 
     @Embedded

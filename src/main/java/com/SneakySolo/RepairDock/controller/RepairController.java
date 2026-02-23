@@ -8,6 +8,8 @@ import com.SneakySolo.RepairDock.service.RequestService;
 import com.SneakySolo.RepairDock.service.SessionService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,20 +39,18 @@ public class RepairController {
         return ResponseEntity.ok(createRequest);
     }
 
-    @GetMapping ("/my")
-    public ResponseEntity<List<Request>> getMyRequests(HttpSession  session) {
-
-        sessionService.requiredRole(session, Role.CUSTOMER);
-        Long userId = sessionService.getCurrentUserId(session);
-
-        List<Request> myRequests = requestService.getMyRequests(session);
-
-        return ResponseEntity.ok(myRequests);
+    @GetMapping("/my")
+    public ResponseEntity<Page<Request>> getMyRequests(
+            HttpSession session,
+            Pageable pageable) {
+        return ResponseEntity.ok(requestService.getMyRequests(session, pageable));
     }
 
     @GetMapping("/repairshop/my-requests")
-    public ResponseEntity<List<Request>> getMyShopRequests(HttpSession session) {
-        return ResponseEntity.ok(requestService.getRequestsForMyShop(session));
+    public ResponseEntity<Page<Request>> getMyShopRequests(
+            HttpSession session,
+            Pageable pageable) {
+        return ResponseEntity.ok(requestService.getRequestsForMyShop(session, pageable));
     }
 
     @PostMapping("/{id}/update-status")
@@ -63,9 +63,14 @@ public class RepairController {
     }
 
     @GetMapping("/open")
-    public ResponseEntity<List<Request>> getOpenRequests(HttpSession session) {
-        sessionService.requiredRole(session, Role.REPAIR_PERSON);
-        return ResponseEntity.ok(requestService.getOpenRequests());
+    public ResponseEntity<Page<Request>> getOpenRequests(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            HttpSession session) {
+
+        return ResponseEntity.ok(
+                requestService.getOpenRequests(session, page, size)
+        );
     }
 
     @PostMapping("/{id}/accept")
